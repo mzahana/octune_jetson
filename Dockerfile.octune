@@ -15,15 +15,34 @@ ENV ROS_ROOT=/opt/ros/${ROS_DISTRO}
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+ENV GIT_TOKEN=${GIT_TOKEN}
+
 # Some ROS packaes
 ## MAVLINK/MAVROS
 RUN apt update && apt -y --quiet --no-install-recommends install \
+    build-essential \
+    net-tools \
+    iputils-ping \
+    nano \
+    bash-completion \
+    iproute2 \
+    pkg-config \
+    python-catkin-tools \
+    python-rosdep \
+    python-rosinstall \
+    python-rosinstall-generator \
+    python-wstool \
     geographiclib-tools \
     libeigen3-dev \
     libgeographic-dev \
     libyaml-cpp-dev \
+    gfortran \
     python-pip \
     python-tk \
+    libopenblas-dev \
+    liblapack-dev \
+    libfreetype6-dev \
+    libpng-dev \
     ros-$ROS_DISTRO-mav-msgs \
     ros-$ROS_DISTRO-mavlink \
     ros-$ROS_DISTRO-mavros \
@@ -53,7 +72,7 @@ RUN cd $HOME/catkin_ws/src && \
 
 
 # setup entrypoint
-COPY ./scripts/ros_entrypoint.sh /ros_entrypoint.sh
+COPY ./packages/ros_entrypoint.sh /ros_entrypoint.sh
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
 WORKDIR /root

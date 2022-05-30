@@ -1,6 +1,7 @@
 
+set -e
 # First clone jetson-containers to build the ROS image
-if [ ! -d $HOME/src]; then
+if [ ! -d $HOME/src ]; then
     echo "Creating $HOME/src directory ..."
     mkdir $HOME/src
 fi
@@ -10,7 +11,7 @@ if [ ! -d "$HOME/src/jetson-containers" ]; then
     git clone https://github.com/dusty-nv/jetson-containers.git
 else
     cd $HOME/src/jetson-containers
-    git pull master
+    git pull origin master
 fi
 
 # Build ROS melodic Docker image
@@ -20,9 +21,9 @@ cd $HOME/src/jetson-containers
 
 # Get the l4t versoin environment variable L4T_VERSION
 cd $HOME/src/jetson-containers
-./scripts/l4t_version.sh
+source scripts/l4t_version.sh
 
-docker build -f $HOME/src/octune_env_vars/Dockerfile.octune \
-            -t mzahana:octune-r$L4T_VERSION \
+docker build --network=host -t mzahana:octune-r$L4T_VERSION \
+                -f $HOME/src/octune_jetson/Dockerfile.octune \
             --build-arg BASE_IMAGE=ros:melodic-ros-base-l4t-r$L4T_VERSION \
-            --build-arg GIT_TOKEN=$GIT_TOKEN
+            --build-arg GIT_TOKEN=$GIT_TOKEN .

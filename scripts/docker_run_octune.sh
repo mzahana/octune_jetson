@@ -2,7 +2,7 @@
 
 source $HOME/src/jetson-containers/scripts/l4t_version.sh
 
-DOCKER_REPO="mzahana/octune:r$L4T_VERSION"
+DOCKER_REPO="mzahana:octune-r$L4T_VERSION"
 CONTAINER_NAME="octune"
 USER_VOLUME=""
 USER_COMMAND=""
