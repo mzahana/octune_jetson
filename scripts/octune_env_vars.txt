@@ -12,3 +12,6 @@ ROS_HOSTNAME=${UAV_IP}
 # For MAVROS
 FCU_URL=/dev/px4:921600
 GCS_URL=udp://@${GCS_IP}:14550
+MAVLINK_ID=1
+
+OCTUNE_PARAMS_YAML=/root/shared_volume/octune_params.yaml
