@@ -1,0 +1,59 @@
+# This Dockerfile requires ROS melodic image to be built first using 
+# https://github.com/dusty-nv/jetson-containers
+
+# The L4T version is retrieved using l4t_version.sh in jetson-containers/scripts/
+
+#ARG BASE_IMAGE=ros:melodic-ros-base-l4t-r32.4.4
+
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+# Should obtain the GIT_TOKEN from GitHub admin, and export it before building this image
+ARG GIT_TOKEN
+ENV ROS_DISTRO=melodic
+ENV ROS_ROOT=/opt/ros/${ROS_DISTRO}
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Some ROS packaes
+## MAVLINK/MAVROS
+RUN apt update && apt -y --quiet --no-install-recommends install \
+    geographiclib-tools \
+    libeigen3-dev \
+    libgeographic-dev \
+    libyaml-cpp-dev \
+    python-pip \
+    python-tk \
+    ros-$ROS_DISTRO-mav-msgs \
+    ros-$ROS_DISTRO-mavlink \
+    ros-$ROS_DISTRO-mavros \
+    ros-$ROS_DISTRO-mavros-extras \
+    ros-$ROS_DISTRO-rqt-reconfigure \
+	&& geographiclib-get-geoids egm96-5 \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+    && rm -rf /var/lib/apt/lists/*
+
+
+# Create ROS catkin_ws to host ROS packages
+RUN mkdir -p $HOME/catkin_ws/src \
+    && cd $HOME/catkin_ws \
+    && catkin init \
+    && catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release \
+    && catkin config --merge-devel \
+    && catkin config --extend /opt/ros/$ROS_DISTRO \
+    && catkin build
+
+RUN cd $HOME/catkin_ws/src && \
+    git clone https://${GIT_TOKEN}@github.com/mzahana/px4_octune_ros.git && \
+    export GIT_TOKEN=$GIT_TOKEN && \
+    cd px4_octune_ros/scripts && ./setup.sh
+
+
+
+
+# setup entrypoint
+COPY ./scripts/ros_entrypoint.sh /ros_entrypoint.sh
+ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["bash"]
+WORKDIR /root
