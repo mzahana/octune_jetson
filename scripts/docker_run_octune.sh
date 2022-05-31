@@ -62,6 +62,8 @@ else
 
 # cmd_str is exported by the set_ugv_env_vars.sh script
 CMD=" eval $cmd_str &&\
+        source /root/catkin_ws/devel/setup.bash && \
+       roslaunch px4_octune_ros run_on_hardware.launch &&\
        /bin/bash"
 # roslaunch psu_delivery_drone_system system.launch &&
 # 

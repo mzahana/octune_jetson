@@ -88,7 +88,6 @@ RUN cd $HOME/catkin_ws && catkin build
 
 RUN echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
 
-
 # setup entrypoint
 COPY ./packages/ros_entrypoint.sh /ros_entrypoint.sh
 ENTRYPOINT ["/ros_entrypoint.sh"]
