@@ -40,9 +40,10 @@ sleep 2
 
 ##################################################################################
 
-
 echo "Starting Container: ${CONTAINER_NAME} with REPO: $DOCKER_REPO"
- 
+
+CMD=" eval $cmd_str &&\
+       /bin/bash" 
 if [ "$(docker ps -aq -f name=${CONTAINER_NAME})" ]; then
     if [ "$(docker ps -aq -f status=exited -f name=${CONTAINER_NAME})" ]; then
         # cleanup

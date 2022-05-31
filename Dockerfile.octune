@@ -63,12 +63,30 @@ RUN mkdir -p $HOME/catkin_ws/src \
     && catkin config --extend /opt/ros/$ROS_DISTRO \
     && catkin build
 
+RUN mkdir -p $HOME/src
+
+# Clone OCTUNE
+RUN cd $HOME/src &&\
+    git clone https://${GIT_TOKEN}@github.com/mzahana/octune.git &&\
+    cd octune && git checkout python2
+
+# This is to solve installation issues related to pip (Python 2.7)
+RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
+RUN python get-pip.py --force-reinstall
+
+RUN pip install numpy==1.13.3 --user
+RUN pip install matplotlib==2.2.5 --user
+RUN pip install scipy==1.2.3 --user
+RUN pip install pandas --user
+
+RUN cd $HOME/src/octune && python setup.py develop --user
+
 RUN cd $HOME/catkin_ws/src && \
-    git clone https://${GIT_TOKEN}@github.com/mzahana/px4_octune_ros.git && \
-    export GIT_TOKEN=$GIT_TOKEN && \
-    cd px4_octune_ros/scripts && ./setup.sh
+    git clone https://${GIT_TOKEN}@github.com/mzahana/px4_octune_ros.git
 
+RUN cd $HOME/catkin_ws && catkin build
 
+RUN echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
 
 
 # setup entrypoint
