@@ -2,7 +2,7 @@
 
 source $HOME/src/jetson-containers/scripts/l4t_version.sh
 
-DOCKER_REPO="mzahana/octune:r$L4T_VERSION"
+DOCKER_REPO="mzahana:octune-r$L4T_VERSION"
 CONTAINER_NAME="octune"
 USER_VOLUME=""
 USER_COMMAND=""
@@ -40,9 +40,10 @@ sleep 2
 
 ##################################################################################
 
-
 echo "Starting Container: ${CONTAINER_NAME} with REPO: $DOCKER_REPO"
- 
+
+CMD=" eval $cmd_str &&\
+       /bin/bash" 
 if [ "$(docker ps -aq -f name=${CONTAINER_NAME})" ]; then
     if [ "$(docker ps -aq -f status=exited -f name=${CONTAINER_NAME})" ]; then
         # cleanup
@@ -61,6 +62,8 @@ else
 
 # cmd_str is exported by the set_ugv_env_vars.sh script
 CMD=" eval $cmd_str &&\
+        source /root/catkin_ws/devel/setup.bash && \
+       roslaunch px4_octune_ros run_on_hardware.launch &&\
        /bin/bash"
 # roslaunch psu_delivery_drone_system system.launch &&
 # 
