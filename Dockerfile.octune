@@ -81,6 +81,7 @@ RUN pip install pandas --user
 
 RUN cd $HOME/src/octune && python setup.py develop --user
 
+RUN echo ""
 RUN cd $HOME/catkin_ws/src && \
     git clone https://${GIT_TOKEN}@github.com/mzahana/px4_octune_ros.git
 
