@@ -1,6 +1,8 @@
 
 RUN_MAVROS=True
 RUN_OCTUNE=True
+# Set False if running on hardware. Otherwise, it won't be able to save plots
+SIMULATION=False
 
 
 GCS_USERNAME=mzahana-laptop
