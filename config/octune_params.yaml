@@ -13,6 +13,9 @@ save_plots: True
 # Sampling/upsampling time of raw data, seconds
 sampling_dt: 0.01
 
+# Raw data frequency, Hz
+raw_data_freq: 90
+
 # Use low pass filter for roll/pitch rate feedback data
 use_lowpass_f: False
 # Low pass cutoff frequency in hz
