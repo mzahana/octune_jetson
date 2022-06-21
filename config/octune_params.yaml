@@ -2,7 +2,7 @@
 debug: False
 
 # Desired duration of collected data samples, seconds
-data_len_sec: 2.0
+data_len_sec: 1.0
 
 plot_save_path: '/root/shared_volume/octune_plots'
 
@@ -22,7 +22,7 @@ use_lowpass_f: False
 lowpass_cutoff: 30.0
 
 # PID sampling time, keep 1 for now
-pid_dt: 1.0
+pid_dt: 0.02
 
 # Maximum number of optimization iterations
 opt_max_iter: 10000
