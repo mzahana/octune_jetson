@@ -79,7 +79,7 @@ RUN pip install matplotlib==2.2.5 --user
 RUN pip install scipy==1.2.3 --user
 RUN pip install pandas --user
 
-RUN cd $HOME/src/octune && python setup.py develop --user
+RUN cd $HOME/src/octune && git pull && python setup.py develop --user
 
 RUN echo ""
 RUN cd $HOME/catkin_ws/src && \

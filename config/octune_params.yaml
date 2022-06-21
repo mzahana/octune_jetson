@@ -39,6 +39,8 @@ opt_max_failures: 10
 # Recommended to set it True to avoid divergence
 use_optimal_alpha: True
 
+alpha_factor: 0.1
+
 # Learning rate
 learning_rate: 0.001
 
